@@ -8,6 +8,7 @@
     </script>
     
     <template>
+    <n-card>
     <table id="simple">
         <td class="search">
         <form action="select" method="post">
@@ -17,6 +18,7 @@
         </form>
         </td>
     </table>
+  </n-card>
     </template>
     
     <style scoped>

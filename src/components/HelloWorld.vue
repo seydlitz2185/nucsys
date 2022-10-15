@@ -9,37 +9,31 @@ defineProps({
 
 <template>
   <div class="greetings">
-    <h3 class="cyan">{{ msg }}</h3>
-    <!--
-    <h3>
-      You’ve successfully created a project with
-      <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
-    </h3>
-    -->
+    <n-card>
+    <img alt="logo" class="logo" src="../assets/images/hamburger-48.png" width="48" height="48" />
+    <n-gradient-text  type="warning">
+      {{ msg }}</n-gradient-text>
+  </n-card>
   </div>
 </template>
 
 <style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  top: -10px;
-}
 
-h3 {
+
+.greetings {
+  text-align: center;
   font-size: 1.2rem;
 }
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
+.n-gradient-text {
+  font-size: 24px;
+  align-items: center;
+  vertical-align: 45%;
 }
 
+.logo{
+  vertical-align: 25%;
+}
 @media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+
 }
 </style>

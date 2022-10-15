@@ -4,9 +4,9 @@
         type: String,
         required: true
       }
-    })
+    });
     </script>
-    
+
     <template>
     <table id="simple">
     <tr>
@@ -14,7 +14,7 @@
     <form action="login" method="post">
         账号：<input type="text" name="account"><br/><br/>
         密码：<input type="text" name="passwd"><br/><br/>
-            <input type="submit" value="登陆">
+            <input type="submit"  value="登陆">
             <br/><br/>
     </form>
             </td>
