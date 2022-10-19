@@ -8,6 +8,8 @@ import AboutUs from '../components/AboutUs.vue';
 import HelloThere from '../components/HelloThere.vue';
 import dining from '../components/workplace/dining.vue';
 import mystate from '../components/workplace/mystate.vue';
+import mydining from  '../components/workplace/mydining/mydining.vue';
+import mydiningorder from  '../components/workplace/mydining/mydiningorder.vue';
 import market from '../components/workplace/market.vue';
 import settings from '../components/workplace/settings.vue';
 import proxypick from '../components/workplace/proxypick.vue';
@@ -44,7 +46,11 @@ const routes=[
       {path:'/HomePage/diningpost',name:"diningpost",component:diningpost, props: true,},
       {path:'/HomePage/expresspost',name:"expresspost",component:expresspost, props: true,},
       {path:'/HomePage/marketpost',name:"marketpost",component:marketpost, props: true,},
-      {path:'/HomePage/mystate',name:"mystate",component:mystate,props: true},
+      {path:'/HomePage/mystate',name:"mystate",component:mystate,props: true,
+      children:[
+        {path:'/HomePage/mystate/mydining',name:"mydining",component:mydining,props: true},
+        {path:'/HomePage/mystate/mydiningorder',name:"mydiningorder",component:mydiningorder,props: true},
+      ]},
       {path:'/HomePage/settings',name:"settings",component:settings,props: true},
       {path:'/HomePage/admin',name:"admin",component:admin,props: true},
       {path:'/HomePage/express',name:"express",component:express,props: true},

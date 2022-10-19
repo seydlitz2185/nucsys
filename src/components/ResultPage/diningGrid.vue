@@ -1,13 +1,15 @@
 <script setup>
 import axios from 'axios';
-import {defineEmits,computed,ref, toRefs, toRef ,inject,} from "vue";
+import {defineEmits,computed,ref, toRefs, toRef ,inject,onBeforeMount} from "vue";
 import{useMessage,useDialog }from 'naive-ui';
 import {storeToRefs} from 'pinia';
 import {useDiningStore} from "../../stores/diningpinia";
+import {useDummyFlagStore} from "../../stores/dummyflag";
 const renovate = inject("reload");
 const dialog = useDialog();
 const message=useMessage();
 const store = useDiningStore();
+const dummyFlag = useDummyFlagStore();
 const emit = defineEmits(["getInitParam"]);
 const props =defineProps({
       msg: {
@@ -18,22 +20,30 @@ const props =defineProps({
 
 const data = toRef(props, 'msg'); 
 const pageId = parseInt(data.value);
+
 const page= ref((localStorage.getItem('diningPage')==null || localStorage.getItem('diningPage')==='') ? 1:parseInt(localStorage.getItem('diningPage')));
 function handleClose () {
         message.warning('你尝试关闭，但并没有这个功能');
       };
 
-const loading =toRef( (store.grids[pageId].diningId==-1)?ref(true):ref(false));
-
-
-
-
 
 
 function pushResParam (res){
   var i = 0;
-  for (i = 0; i < res.length; i++) { 
+  for (i = 0; i < 8; i++) { 
           let resElem = res[i];
+       
+          if(resElem == null){
+            store.grids[i].diningContact = "dummy";
+          store.grids[i].diningId = parseInt(-1);
+          store.grids[i].diningInfo = "dummy";
+          store.grids[i].diningName = "dummy";
+          store.grids[i].diningPrice ="dummy";
+          store.grids[i].diningTags =["dummy"] ;
+          store.grids[i].diningTime = "dummy";
+          store.grids[i].diningUser = "dummy";
+          store.grids[i].diningUserId = "dummy";
+          }else{
           store.grids[i].diningContact = resElem.diningContact;
           store.grids[i].diningId = parseInt(resElem.diningId);
           store.grids[i].diningInfo = resElem.diningInfo;
@@ -43,6 +53,7 @@ function pushResParam (res){
           store.grids[i].diningTime = resElem.diningTime;
           store.grids[i].diningUser = resElem.diningUser;
           store.grids[i].diningUserId = resElem.diningUserId;
+          }
         }
 };
 
@@ -122,7 +133,8 @@ function timestampToTime(timestamp) {
 <template>
 
     <n-message-provider>
-    <n-card
+      <n-skeleton height="100%" width="100%" v-if=dummyFlag.flags[pageId] />
+    <n-card v-else
     v-model:title= store.grids[pageId].diningName
     embedded
     closable
@@ -133,14 +145,12 @@ function timestampToTime(timestamp) {
       content: true,
     }"
   >
-    <n-skeleton v-if="loading" />
-    <div  v-else>
+    <div >
       <div>{{timestampToTime(store.grids[pageId].diningTime)}}</div>
     <n-dynamic-tags :closable="false" v-model:value="store.grids[pageId].diningTags" :max="0" :type="primary"/>
     </div>
   <template #action >
-    <n-skeleton v-if="loading" />
-    <n-grid  v-else :cols="2" :x-gap="24" item-responsive="true">
+    <n-grid  :cols="2" :x-gap="24" item-responsive="true">
         <n-form-item-gi>
       </n-form-item-gi>
     <n-form-item-gi>

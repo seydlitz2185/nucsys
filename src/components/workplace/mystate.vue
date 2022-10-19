@@ -1,6 +1,5 @@
 <script setup>
 import { defineComponent,ref,toRef } from "vue";
-
 const UserValue=ref({
   mystate:{
       myOrders:125,
@@ -16,22 +15,40 @@ const UserValue=ref({
 <template>
    <n-grid cols="1 200:5 200:5">
       <n-gi>
-        <n-statistic label="我的订单" value="125 集" />
+        <n-statistic label="我的订单" value="12" />
       </n-gi>
       
       <n-gi>
-        <n-statistic label="我的代取" value="22 位" />
+        <n-statistic label="我的代取" value="22" />
       </n-gi>
       <n-gi>
-        <n-statistic label="正在进行中的订单" value="36 次" />
+        <n-statistic label="总订单" value="36" />
       </n-gi>
       <n-gi>
-        <n-statistic label="正在进行中的代取" value="83 个" />
-      </n-gi>
-      <n-gi>
-        <n-statistic label="当前总代取数" value="2,346 个" />
+        <n-statistic label="正在进行中的代取" value="23" />
       </n-gi>
     </n-grid>
-   
+    <n-divider />
+       
+    
+<n-breadcrumb>
+    <n-breadcrumb-item>
+      <n-button   tertiary  type="primary">
+        <router-link to="/HomePage/mystate/mydiningorder">我的吃饭订单</router-link>
+    </n-button>
+    </n-breadcrumb-item>
+    <n-breadcrumb-item>
+      <n-button  tertiary type="primary">
+        <router-link to="/HomePage/mystate/mydining">我的吃饭代取</router-link>
+    </n-button>
+    </n-breadcrumb-item>
+    <n-breadcrumb-item>
+    </n-breadcrumb-item>
+  </n-breadcrumb>
+
+  
+      <div class="wrapper">
+      <router-view ></router-view>
+    </div>
   </template>
   
