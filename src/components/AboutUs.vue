@@ -1,5 +1,6 @@
 <template>
     <n-card>@Author:信息191于世文14119401<br><a href="https://github.com/seydlitz2185">我的Github主页</a></n-card>
+    <n-card>@Author:信息192耿冰峰<br></n-card>
     <n-card>
     <n-gradient-text type="info">
     很惭愧

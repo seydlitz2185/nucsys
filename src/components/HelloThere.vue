@@ -28,11 +28,11 @@
   </n-space>
     </template>
     <template #default class="default">
-
+      <div class="wrapper">
       <router-view ></router-view>
-
+    </div>
   </template>
-  <template #footer>
+  <template #footer class="footer">
   “Bad programmers worry about the code.
    Good programmers worry about data structures
     and their relationships.”
@@ -58,8 +58,15 @@ a{
   text-decoration: none;
   color: green;
 }
-
-
+.wrapper{display: flex;flex-direction: column;min-height: 100%;}
+.footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  line-height: var(--footer-height);
+  background: #42b983;
+  color: #fff;
+}
 }
 
 </style>

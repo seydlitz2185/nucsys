@@ -1,32 +1,3 @@
-<template>
-<n-message-provider>
-    <n-form 
-        ref="formRef" :model="DiningValue" :rules="rules"
-        >
-          <n-form-item-row label="食堂名称" path = "UserLogin.account">
-            <n-input type="input"  v-model:value="DiningValue.Dining.name" @update:value="DiningValue.Dining.name" name="name"/>
-          </n-form-item-row>
-          <n-form-item-row label="时间" path = "UserLogin.passwd">
-            <n-date-picker type="datetime" v-model:value="DiningValue.Dining.time" @update:value="DiningValue.Dining.time" name="time"/>
-          </n-form-item-row>
-          <n-form-item-row label="金额" path = "UserLogin.passwd">
-            <n-input type="input" v-model:value="DiningValue.Dining.cost" @update:value="DiningValue.Dining.cost" name="cost"/>
-          </n-form-item-row>
-          <n-form-item-row label="联系方式" path = "UserLogin.passwd">
-            <n-input type="input" v-model:value="DiningValue.Dining.contact" @update:value="DiningValue.Dining.contact" name="contact"/>
-          </n-form-item-row>
-          <n-form-item-row label="详细信息" path = "UserLogin.passwd">
-            <n-input type="input" v-model:value="DiningValue.Dining.information" @update:value="DiningValue.Dining.information" name="information"/>
-          </n-form-item-row>
-        </n-form>
-        <n-button type="primary" @click="submit"  block secondary strong>
-          提交
-        </n-button>
-        <n-button type="primary" @click="save"  block secondary strong>
-          暂存
-        </n-button>   
-</n-message-provider>     
-</template>
 
 <script setup>
 import { defineComponent, ref ,watch} from "vue";
@@ -40,13 +11,16 @@ defineProps({
         required: true
       }
     });
-    const DiningValue=ref({
-         Dining: {
-          name:"一",
+    const message = useMessage();
+    const formRef = ref(null);
+    const ExpressValue=ref({
+         express: {
+          type:"",
+          code:"",
           time: "",
           cost:"",
           contact:"",
-          information:"",
+          info:"",
           },
          },
     );
@@ -54,7 +28,7 @@ defineProps({
       formRef.value?.validate((errors) => {
           if (!errors) {
             let params = new URLSearchParams();
-        params.append("json",JSON.stringify(DiningValue.value));
+        params.append("json",JSON.stringify(ExpressValue.value));
         axios.post(
          "http://localhost:8082/RegisteServlet", params)
          .then(function(resp){
@@ -86,7 +60,7 @@ defineProps({
       formRef.value?.validate((errors) => {
           if (!errors) {
             let params = new URLSearchParams();
-        params.append("json",JSON.stringify(DiningValue.value));
+        params.append("json",JSON.stringifyt(ExpressValue.value));
         axios.post(
          "http://localhost:8082/RegisteServlet", params)
          .then(function(resp){
@@ -115,10 +89,15 @@ defineProps({
           }});};
     
     const rules =ref( {
-        Dining: {
-          name: {
+        express: {
+          type: {
             required: true,
-            message: '请输入食堂名称',
+            message: '请输入快递种类',
+            trigger: 'blur'
+          },  
+          code: {
+            required: true,
+            message: '请输入取件码',
             trigger: 'blur'
           },
           time: {
@@ -137,10 +116,46 @@ defineProps({
             trigger: 'blur'
           },
           information: {
-            required: true,
+            required: false,
             message: '请输入详细信息',
             trigger: 'blur'
           }
         },
     },);
 </script>
+<template>
+    <n-message-provider>
+        <n-form 
+            ref="formRef" :model="ExpressValue" :rules="rules"
+            >
+              <n-form-item-row label="快递种类" path = "express.type">
+                <n-input type="input" v-model:value="ExpressValue.express.type" @update:value="ExpressValue.express.type" name="type"/>
+              </n-form-item-row>
+              <n-form-item-row label="取件码" path = "express.code">
+                <n-input type="input" v-model:value="ExpressValue.express.code" @update:value="ExpressValue.express" name="code"/>
+              </n-form-item-row>
+
+              <n-form-item-row label="金额" path = "express.cost">
+                <n-input type="input" v-model:value="ExpressValue.express.cost" @update:value="ExpressValue.express.cost" name="cost"/>
+              </n-form-item-row>
+              <n-form-item-row label="联系方式" path = "express.contact">
+                <n-input type="input" v-model:value="ExpressValue.express.contact" @update:value="ExpressValue.express.contact" name="contact"/>
+              </n-form-item-row>
+              <n-form-item-row label="备注" path = "express.info">
+                <n-input type="input" v-model:value="ExpressValue.express.info" @update:value="ExpressValue.express.info" name="information"/>
+              </n-form-item-row>
+            </n-form>
+            <n-grid :cols="2" :x-gap="24" item-responsive="true">
+        <n-form-item-gi>
+          <n-button  type="primary" @click="submit"  block secondary strong>
+          提交
+        </n-button>
+      </n-form-item-gi>
+    <n-form-item-gi>
+        <n-button type="primary" @click="save"  block secondary strong>
+          暂存
+        </n-button>   
+        </n-form-item-gi>
+      </n-grid>
+    </n-message-provider>     
+</template>

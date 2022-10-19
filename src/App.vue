@@ -1,6 +1,6 @@
 <script setup>
   
-import { ref, computed } from 'vue'
+import { ref, computed ,provide,nextTick} from 'vue'
 import HelloThere from "./components/HelloThere.vue";
 import "vue-router";
 import { useOsTheme, darkTheme } from "naive-ui";
@@ -11,10 +11,11 @@ const routes = useRoute;
 const router = useRouter;
 
 
+
 </script>
 
 <template>
-
+  <n-dialog-provider>
     <n-config-provider :theme="theme" >
       <!--
     <n-card > 系统开发中，此页面仅为测试使用。
@@ -23,19 +24,24 @@ const router = useRouter;
     <HelloThere class="obiwan"/>
 </n-message-provider>
 </n-config-provider>
+</n-dialog-provider>
 </template>
 
 <style scoped>
 
-@media (min-width: 1024px) {
+@media (min-width: 200px) {
   header {
     display: flex;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
   }
-
-
-
+.obiwan{
+  position:absolute;
+top:0;
+right:0;
+bottom:0;
+left:0;
+}
 
   }
 

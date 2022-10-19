@@ -1,13 +1,3 @@
-<script setup>
-import { useRouter } from 'vue-router';
-
-
-const router = useRouter();
-
-function goback(){
-  tou
-}
-</script>
 <template>
   <n-result
     status="403"

@@ -1,5 +1,5 @@
 <script setup>
-import { defineComponent, h,ref } from "vue";
+import { defineComponent, h,ref,provide,nextTick } from "vue";
 import { NIcon, useMessage } from "naive-ui";
 import { RouterLink,useRoute,useRouter } from "vue-router";
 import { BasketOutline, BeerOutline, BookmarkOutline, BugOutline, CaretDownOutline, CubeOutline, FastFoodOutline, GridOutline, IceCreamOutline, PeopleOutline, SettingsOutline, SettingsSharp, WalkOutline, WatchOutline } from "@vicons/ionicons5";
@@ -16,10 +16,27 @@ import isMounted from "vooks/lib/life-cycle/use-is-mounted";
 function renderIcon(icon) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
+const isRouterAlive = ref(true);
+
+const reload = () => {
+
+  isRouterAlive.value = false;
+
+  nextTick(() => {
+
+    isRouterAlive.value = true;
+
+  });
+
+};
+
+provide("reload", reload);
 
 const routes = useRoute();
+const router = useRouter();
 const message = useMessage();
 const collapsed=ref(false);
+
 const userinfo = JSON.parse(localStorage.login);
 const menuOptions = [
   {
@@ -43,7 +60,7 @@ const menuOptions = [
       RouterLink,
       {
         to: {
-          name: "dinning",
+          name: "dining",
           params: {
             lang: "zh-CN"
           }
@@ -64,13 +81,13 @@ const menuOptions = [
             RouterLink,
             {
               to: {
-              name: "dinning",
+              name: "dining",
               params: {
               lang: "zh-CN"
               }
               }
             }, { default: () => "食堂" }),
-            key: "dinning",
+            key: "dining",
             icon: renderIcon(IceCreamOutline)
           },
           {
@@ -95,7 +112,7 @@ const menuOptions = [
       RouterLink,
       {
         to: {
-          name: "takeaway",
+          name: "express",
           params: {
             lang: "zh-CN"
           }
@@ -111,20 +128,7 @@ const menuOptions = [
         label: "贵重物品请勿代取",
         key: "whattotake",
         children:[
-          {
-            label: () => h(
-            RouterLink,
-            {
-              to: {
-              name: "proxypick",
-              params: {
-              lang: "zh-CN"
-              }
-              }
-            }, { default: () => "外卖" }),
-            key: "takeaway",
-            icon: renderIcon(FastFoodOutline)
-          },
+          
           {
             label: () => h(
             RouterLink,
@@ -138,6 +142,20 @@ const menuOptions = [
             },{ default: () => "快递" }),
             key: "express",
             icon: renderIcon(CubeOutline)
+          },{
+            label: () => h(
+            RouterLink,
+            {
+              to: {
+              name: "403",
+              params: {
+              lang: "zh-CN"
+              }
+              }
+            }, { default: () => "外卖" }),
+            key: "takeaway",
+            icon: renderIcon(FastFoodOutline),
+            disabled: true,
           },
         ]
       }
@@ -147,7 +165,7 @@ const menuOptions = [
       RouterLink,
       {
         to: {
-          name: "dinning",
+          name: "403",
           params: {
             lang: "zh-CN"
           }
@@ -195,11 +213,8 @@ const options=[
         },
 ];
 
-
-
-
 function handleBack() {
-        message.info("[onBack]");
+        router.go(-1);
       };
 
 function  getParam(){
@@ -219,6 +234,7 @@ defineComponent({
     return {
 
       activeKey: ref<string | null>(null),
+        isRouterAlive,
 
       menuOptions,
       renderMenuLabel(option) {
@@ -242,7 +258,8 @@ defineComponent({
         return h(NIcon, null, { default: () => h(CaretDownOutline) });
       },
       
-  }}
+  }},
+
 });
 
 </script>  
@@ -250,23 +267,7 @@ defineComponent({
   <template>
     <n-message-provider>
         <n-page-header subtitle="给你带来更便捷的校园生活" @back="handleBack">
-    <n-grid :cols="5">
-      <n-gi>
-        <n-statistic label="我的订单" value="125 集" />
-      </n-gi>
-      <n-gi>
-        <n-statistic label="我的代取" value="22 位" />
-      </n-gi>
-      <n-gi>
-        <n-statistic label="正在进行中的订单" value="36 次" />
-      </n-gi>
-      <n-gi>
-        <n-statistic label="正在进行中的代取" value="83 个" />
-      </n-gi>
-      <n-gi>
-        <n-statistic label="当前总代取数" value="2,346 个" />
-      </n-gi>
-    </n-grid>
+   
     <template #title >
       <a
         href="https://github.com/seydlitz2185/"
@@ -281,7 +282,6 @@ defineComponent({
     </template>
     <template #extra>
       <n-space>
-        <n-button>刷新</n-button>
         <n-dropdown :options="options" placement="bottom-start">
           <n-button :bordered="false" style="padding: 0 4px">
             ···
@@ -289,26 +289,23 @@ defineComponent({
         </n-dropdown>
       </n-space>
     </template>
-    <template #footer>
-    </template>
   </n-page-header>
-
   <n-space vertical>
     <n-switch v-model:value="collapsed" />
     <n-layout has-sider="true" embedded >
       <n-layout-sider       
       bordered
         collapse-mode="width"
-        :collapsed-width="64"
+        :collapsed-width="48"
         :width="240"
         :collapsed="collapsed"
         show-trigger
         @collapse="collapsed = true"
         @expand="collapsed = false"
-        content-style="padding: 10px;">
+        content-style="padding: 0px;">
       <n-menu 
         :collapsed="collapsed"
-        :collapsed-width="64"
+        :collapsed-width="48"
         :collapsed-icon-size="22"
         :options="menuOptions"
         :default-expanded-keys="defaultExpandedKeys"
@@ -319,10 +316,11 @@ defineComponent({
         @update:value="handleUpdateValue" />
     </n-layout-sider>
     <n-layout-content content-style="padding: 24px;">
-        <routerView></routerView>
+        <routerView v-if="isRouterAlive"></routerView>
     </n-layout-content>
   </n-layout>
   </n-space>
+
 </n-message-provider>
       
 
@@ -338,7 +336,7 @@ defineComponent({
     padding-right: calc(var(--section-gap) / 2);
   }
   .menu{
-    height: 600px;
+    max-height: 1024px;
   }
 
 

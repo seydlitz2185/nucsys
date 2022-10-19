@@ -6,15 +6,21 @@ import Search from '../components/Search.vue';
 import Login from '../components/Login.vue';
 import AboutUs from '../components/AboutUs.vue';
 import HelloThere from '../components/HelloThere.vue';
-import dinning from '../components/workplace/dinning.vue';
+import dining from '../components/workplace/dining.vue';
 import mystate from '../components/workplace/mystate.vue';
 import market from '../components/workplace/market.vue';
 import settings from '../components/workplace/settings.vue';
 import proxypick from '../components/workplace/proxypick.vue';
 import express from '../components/workplace/express.vue';
 import takeaway from '../components/workplace/takeaway.vue';
-import dinningpost from '../components/workplace/geng/dinning.vue';
+import diningpost from '../components/workplace/geng/diningpost.vue';
+import expresspost from '../components/workplace/geng/expresspost.vue';
+import marketpost from '../components/workplace/geng/marketpost.vue';
 import admin from "../components/AdminPage/admin.vue";
+import errorpage from "../components/ResultPage/error-page.vue";
+import page403  from "../components/ResultPage/403.vue";
+import page404  from "../components/ResultPage/404.vue";
+import page500  from "../components/ResultPage/500.vue";
 import { useMessage } from 'naive-ui';
 const message = useMessage();
 const routes=[
@@ -31,10 +37,13 @@ const routes=[
     meta:{
       requireAuth:true,
     },
-    //redirect:'/HomePage/mystate',
+    redirect:'/HomePage/mystate',
     children:[
-      {path:'/HomePage/dinning',name:"dinning",component:dinning,props: true,
-      children:[{path:'/HomePage/dinning/dinningpost',name:"dinningpost",component:dinningpost, props: true,},],},
+      {path:'/HomePage/dining',name:"dining",component:dining,props: true,
+      children:[],},
+      {path:'/HomePage/diningpost',name:"diningpost",component:diningpost, props: true,},
+      {path:'/HomePage/expresspost',name:"expresspost",component:expresspost, props: true,},
+      {path:'/HomePage/marketpost',name:"marketpost",component:marketpost, props: true,},
       {path:'/HomePage/mystate',name:"mystate",component:mystate,props: true},
       {path:'/HomePage/settings',name:"settings",component:settings,props: true},
       {path:'/HomePage/admin',name:"admin",component:admin,props: true},
@@ -62,6 +71,15 @@ const routes=[
     path:"/AboutUs",
     name:"AboutUs",
     component:AboutUs,
+  },
+  {
+    path:"/error-pages",
+    name:"error-pages",
+    component:errorpage,
+    children:[
+      {path:'/error-pages/403',name:"403",component:page403,props: true,},
+      {path:'/error-pages/404',name:"404",component:page404,props: true,},
+      {path:'/error-pages/500',name:"500",component:page500,props: true,},],
   },
 ];
 

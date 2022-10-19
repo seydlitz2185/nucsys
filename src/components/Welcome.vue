@@ -17,7 +17,7 @@ import HelloWorld from './HelloWorld.vue';
     996，你觉得你就很骄傲了？这个世界上，我们每一个人都希望成功，都希望美好生活，都希望被尊重，我请问大家，你不付出超越别人的努力和时间，你怎么能够实现你想要的成功？
   </n-card>
   <n-card>
-  <n-carousel autoplay>
+  <n-carousel autoplay trigger="hover"  >
     <img
       class="carousel-img"
       src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg"
@@ -57,7 +57,7 @@ import HelloWorld from './HelloWorld.vue';
 <style scoped>
 .carousel-img {
       width: 100%;
-      height: 240px;
+      max-height: 280px;
       object-fit: cover;
     }
 

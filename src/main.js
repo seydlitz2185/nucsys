@@ -5,10 +5,12 @@ import 'amfe-flexible';
 import 'amfe-flexible/index.js';
 import router  from './router/index.js';
 import VueCookies from 'vue-cookies'
-
+import { createPinia } from 'pinia'
 const app = createApp(App);
 app.use(naive);
 app.use(router);
+const pinia = createPinia()
+app.use(pinia);
 app.config.globalProperties.$cookies = VueCookies;
 app.mount("#app");
 

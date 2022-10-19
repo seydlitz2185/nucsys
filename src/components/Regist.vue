@@ -26,8 +26,8 @@
         );
     const RegistValue=ref({
       UserRegist:{
-            id:"14119410",
-            userName:"伟佳王",
+            id:"14119402",
+            userName:"王佳伟",
             userPhoneNum:"18168051462",
             userPassword:"123",
             duplicatePassword:"123",
@@ -137,13 +137,15 @@
         let params={
           id:'14119401',
           name:'于世文',
+          msg:'',
+          phoneNum:'12345',
         };
         //$cookies.set("login",params.name),60 * 60 * 24 * 30;
         localStorage.login=JSON.stringify(params);
         router.push({name:"HomePage",});
       };
 
-      const loginAndJump=()=> {
+    const loginAndJump=()=> {
       formRef.value?.validate((errors) => {
           if (!errors) {
           let params = new URLSearchParams();
@@ -153,23 +155,24 @@
          .then(function(resp){
           let res =  resp.data;
         if(res.msg==="登陆成功"){
-	      message.info(
-          //JSON.stringify(res),
-          res.msg,
+	      message.success(
+          JSON.stringify(res),
+          //res.msg,
           {
             keepAliveOnHover: true
           }
         );
         sessionStorage.setItem('accessToken', 12321);
         let data ={
-          id:LoginValue.value.UserLogin.id,
+          id:res.account,
           name:res.name,
+          phoneNum:res.phoneNum,
         };
         localStorage.setItem('login',JSON.stringify(data));
        // $cookies.set("login",name,60 * 60 * 24 * 30);
         router.push({name:"HomePage"});
 	    }else{
-        message.info(
+        message.error(
           res.msg,
           {
             keepAliveOnHover: true
@@ -196,7 +199,7 @@
          .then(function(resp){
           let res =  resp.data;
         if(res.msg==="注册成功"){
-	      message.info(
+	      message.success(
           res.msg,
           {
             keepAliveOnHover: true
@@ -204,14 +207,15 @@
         );
         sessionStorage.setItem('accessToken', 12321);
         let data ={
-          id:RegistValue.value.UserRegist.id,
+          id:res.account,
           name:res.name,
+          phoneNum:res.phoneNum,
         };
         //$cookies.set("login",data.name,60 * 60 * 24 * 30);
         localStorage.login=JSON.stringify(data);
         router.push({name:"HomePage"});
 	    }else{
-        message.info(
+        message.errors(
           res.msg,
           {
             keepAliveOnHover: true
@@ -231,7 +235,7 @@
     
     <template>
   <n-message-provider>
-    <n-card class="kenobi">
+
       <n-button type="primary" @click="loginHomePageTest"  block secondary strong>
           登录
         </n-button>
@@ -258,7 +262,7 @@
             <n-input type="input" v-model:value="LoginValue.UserLogin.passwd" @update:value="LoginValue.UserLogin.passwd" name="passwd"/>
           </n-form-item-row>
         </n-form>
-        <n-button type="primary" @click="loginAndJump"  block secondary strong>
+        <n-button type="primary" @tap="loginAndJump" @click="loginAndJump"  block secondary strong>
           登录
         </n-button>
       </n-tab-pane>
@@ -282,14 +286,14 @@
             <n-input type="input" v-model:value="RegistValue.UserRegist.duplicatePassword" @update:value="RegistValue.UserRegist.duplicatePassword" @keydown.enter.prevent  name="passwdAuth"/>
           </n-form-item-row>
         </n-form>
-        <n-button type="primary" @click="registAndJump" block secondary strong>
+        <n-button type="primary" @tap="registAndJump"  @click="registAndJump" block secondary strong>
           注册
         </n-button>
       </n-tab-pane>
     </n-tabs>
     <div></div>
   </n-card>
-</n-card>
+
 </n-message-provider>
     </template>
 
@@ -316,17 +320,13 @@
     .obiwan{
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5); 
     border-radius: 8px; 
-    width: 512px;
+    width: 300rem;
     max-width: 100%;
-    padding: 0px 35px 0; 
     margin:auto;
-    position:absolute;
-    left:45%;
-    margin:20px 0 0 -200px; 
+    position:sticky;
+    width: 380px;
   }
-   .kenobi{
-    height: 600px;
-   }
+
  
     </style>
     
