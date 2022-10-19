@@ -1,11 +1,13 @@
 <script setup>
 import axios from 'axios';
-import {defineEmits,computed,ref, toRefs, toRef ,inject} from "vue";
+import {defineEmits,computed,ref, toRefs, toRef ,inject,} from "vue";
 import{useMessage,useDialog }from 'naive-ui';
+import {storeToRefs} from 'pinia';
+import {useDiningStore} from "../../stores/diningpinia";
 const renovate = inject("reload");
 const dialog = useDialog();
 const message=useMessage();
-
+const store = useDiningStore();
 const emit = defineEmits(["getInitParam"]);
 const props =defineProps({
       msg: {
@@ -13,30 +15,42 @@ const props =defineProps({
         required: true
       },
     });
-    const page= ref((localStorage.getItem('diningPage')==null || localStorage.getItem('diningPage')==='') ? 1:parseInt(localStorage.getItem('diningPage')));
+
+const data = toRef(props, 'msg'); 
+const pageId = parseInt(data.value);
+const page= ref((localStorage.getItem('diningPage')==null || localStorage.getItem('diningPage')==='') ? 1:parseInt(localStorage.getItem('diningPage')));
 function handleClose () {
         message.warning('你尝试关闭，但并没有这个功能');
       };
 
-const data = toRef(props, 'msg'); 
-const loading = (data.value===''||data.value==null||data.value==undefined)?ref(true):ref(false);
-const gridVal = computed(()=>{ return {
-  diningContact: (data.value===''||data.value==null||data.value==undefined)?"18842892905":JSON.parse(localStorage.getItem('diningValue'))[parseInt(data.value)].diningContact,
-  diningId: (data.value===''||data.value==null||data.value==undefined)?1:JSON.parse(localStorage.getItem('diningValue'))[data.value].diningId,
-  diningInfo: (data.value===''||data.value==null||data.value==undefined)?"多加米饭":JSON.parse(localStorage.getItem('diningValue'))[data.value].diningInfo,
-  diningName:(data.value===''||data.value==null||data.value==undefined)? "🍱南苑一食堂":"🍱"+JSON.parse(localStorage.getItem('diningValue'))[data.value].diningName,
-  diningPrice: (data.value===''||data.value==null||data.value==undefined)?"15.00":JSON.parse(localStorage.getItem('diningValue'))[data.value].diningPrice,
-  diningTags:(data.value===''||data.value==null||data.value==undefined)? ["黄焖鸡米饭","微辣"]:eval('(' + JSON.parse(localStorage.getItem('diningValue'))[data.value].diningTags + ')'),
-  diningTime:(data.value===''||data.value==null||data.value==undefined)? "1665924437000":JSON.parse(localStorage.getItem('diningValue'))[data.value].diningTime,
-  diningUser:(data.value===''||data.value==null||data.value==undefined)? "Steven":JSON.parse(localStorage.getItem('diningValue'))[data.value].diningUser,
-  diningUserId:(data.value===''||data.value==null||data.value==undefined)?"14119401":JSON.parse(localStorage.getItem('diningValue'))[data.value].diningUserId,
+const loading =toRef( (store.grids[pageId].diningId==-1)?ref(true):ref(false));
 
-}});
+
+
+
+
+
+function pushResParam (res){
+  var i = 0;
+  for (i = 0; i < res.length; i++) { 
+          let resElem = res[i];
+          store.grids[i].diningContact = resElem.diningContact;
+          store.grids[i].diningId = parseInt(resElem.diningId);
+          store.grids[i].diningInfo = resElem.diningInfo;
+          store.grids[i].diningName = resElem.diningName;
+          store.grids[i].diningPrice = resElem.diningPrice;
+          store.grids[i].diningTags =eval('(' +resElem.diningTags + ')') ;
+          store.grids[i].diningTime = resElem.diningTime;
+          store.grids[i].diningUser = resElem.diningUser;
+          store.grids[i].diningUserId = resElem.diningUserId;
+        }
+};
+
 const detail=()=>{
   dialog.info({
           title: '详细信息',
-          content: JSON.stringify({"订单号":gridVal.value.diningId,"用户名":gridVal.value.diningUser,
-      "联系方式":gridVal.value.diningContact,"备注":gridVal.value.diningInfo}),
+          content: JSON.stringify({"订单号":store.grids[pageId].diningId,"用户名":store.grids[pageId].diningUser,
+      "联系方式":store.grids[pageId].diningContact,"备注":store.grids[pageId].diningInfo}),
           positiveText: '好',
 
         })
@@ -44,13 +58,13 @@ const detail=()=>{
 
 const order=()=>{
   const userinfo = JSON.parse(localStorage.login);
-  let data={
-    diningId: gridVal.value.diningId,
-    hostUserId: gridVal.value.diningUserId,
+  let order={
+    diningId: store.grids[pageId].diningId,
+    hostUserId: store.grids[pageId].diningUserId,
     deliverUserId:userinfo.id,
   };
   let params = new URLSearchParams();
-        params.append("json",JSON.stringify(data));
+        params.append("json",JSON.stringify(order));
   axios.post(
          "http://localhost:8082/DiningOrderServlet",params)
          .then(function(resp){
@@ -63,9 +77,9 @@ const order=()=>{
           }
           
         );
-        let data={offset: page.value};
+        let fetch={offset: page.value};
       let params = new URLSearchParams();
-      params.append("json",JSON.stringify(data));
+      params.append("json",JSON.stringify(fetch));
       axios.post(
          "http://localhost:8082/DiningFetchPageServlet",params)
          .then(function(resp){
@@ -78,6 +92,7 @@ const order=()=>{
           
         );
         localStorage.setItem('diningValue',JSON.stringify(res));
+        pushResParam(res);
         });
       }else{ message.error(
             res.msg,
@@ -86,19 +101,6 @@ const order=()=>{
           });
           
         }
-        
-        gridVal =ref({
-  diningContact: (data.value===''||data.value==null||data.value==undefined)?"18842892905":JSON.parse(localStorage.getItem('diningValue'))[parseInt(data.value)].diningContact,
-  diningId: (data.value===''||data.value==null||data.value==undefined)?1:JSON.parse(localStorage.getItem('diningValue'))[data.value].diningId,
-  diningInfo: (data.value===''||data.value==null||data.value==undefined)?"多加米饭":JSON.parse(localStorage.getItem('diningValue'))[data.value].diningInfo,
-  diningName:(data.value===''||data.value==null||data.value==undefined)? "🍱南苑一食堂":"🍱"+JSON.parse(localStorage.getItem('diningValue'))[data.value].diningName,
-  diningPrice: (data.value===''||data.value==null||data.value==undefined)?"15.00":JSON.parse(localStorage.getItem('diningValue'))[data.value].diningPrice,
-  diningTags:(data.value===''||data.value==null||data.value==undefined)? ["黄焖鸡米饭","微辣"]:eval('(' + JSON.parse(localStorage.getItem('diningValue'))[data.value].diningTags + ')'),
-  diningTime:(data.value===''||data.value==null||data.value==undefined)? "1665924437000":JSON.parse(localStorage.getItem('diningValue'))[data.value].diningTime,
-  diningUser:(data.value===''||data.value==null||data.value==undefined)? "Steven":JSON.parse(localStorage.getItem('diningValue'))[data.value].diningUser,
-  diningUserId:(data.value===''||data.value==null||data.value==undefined)?"14119401":JSON.parse(localStorage.getItem('diningValue'))[data.value].diningUserId,
-
-});
         
       })};
 function timestampToTime(timestamp) {
@@ -121,9 +123,10 @@ function timestampToTime(timestamp) {
 
     <n-message-provider>
     <n-card
-    v-model:title= gridVal.diningName
+    v-model:title= store.grids[pageId].diningName
     embedded
     closable
+    hoverable
     @close="handleClose"
     :bordered="false"
     :segmented="{
@@ -132,8 +135,8 @@ function timestampToTime(timestamp) {
   >
     <n-skeleton v-if="loading" />
     <div  v-else>
-      <div>{{timestampToTime(gridVal.diningTime)}}</div>
-    <n-dynamic-tags :closable="false" v-model:value="gridVal.diningTags" :max="0" :type="primary"/>
+      <div>{{timestampToTime(store.grids[pageId].diningTime)}}</div>
+    <n-dynamic-tags :closable="false" v-model:value="store.grids[pageId].diningTags" :max="0" :type="primary"/>
     </div>
   <template #action >
     <n-skeleton v-if="loading" />

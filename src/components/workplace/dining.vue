@@ -2,7 +2,9 @@
 import axios from 'axios';
 import{useMessage}from 'naive-ui';
 import diningGrid from "../ResultPage/diningGrid.vue"
-import { inject,ref,toRef } from "vue";
+import { inject,ref,toRef ,onMounted} from "vue";
+import {useDiningStore} from "../../stores/diningpinia";
+const store = useDiningStore();
 const renovate = inject("reload");
 const message = useMessage();
 const page= ref((localStorage.getItem('diningPage')==null || localStorage.getItem('diningPage')==='') ? 1:parseInt(localStorage.getItem('diningPage')));
@@ -16,6 +18,47 @@ const getOneParam =()=>{
   localStorage.setItem('diningValue',JSON.stringify(data));
 };
 
+onMounted(() => {
+  let fetch={offset: page.value};
+      let params = new URLSearchParams();
+      params.append("json",JSON.stringify(fetch));
+      axios.post(
+         "http://localhost:8082/DiningFetchPageServlet",params)
+         .then(function(resp){
+          let res =  resp.data;
+          message.info(
+            JSON.stringify(res[0]),
+            {
+              keepAliveOnHover: true
+            },
+          {
+            keepAliveOnHover: true
+          }
+        );
+        localStorage.setItem('diningValue',JSON.stringify(res));
+        pushResParam(res);
+        return res;
+        });
+        
+    })
+
+
+function pushResParam (res){
+  var i = 0;
+  for (i = 0; i < res.length; i++) { 
+          let resElem = res[i];
+          store.grids[i].diningContact = resElem.diningContact;
+          store.grids[i].diningId = parseInt(resElem.diningId);
+          store.grids[i].diningInfo = resElem.diningInfo;
+          store.grids[i].diningName = resElem.diningName;
+          store.grids[i].diningPrice = resElem.diningPrice;
+          store.grids[i].diningTags =eval('(' +resElem.diningTags + ')') ;
+          store.grids[i].diningTime = resElem.diningTime;
+          store.grids[i].diningUser = resElem.diningUser;
+          store.grids[i].diningUserId = resElem.diningUserId;
+        }
+};
+
 const getInitParam =()=>{
   let data={offset: page.value};
   let params = new URLSearchParams();
@@ -24,7 +67,8 @@ const getInitParam =()=>{
          "http://localhost:8082/DiningFetchPageServlet",params)
          .then(function(resp){
           let res =  resp.data;
-          message.info(
+          if(res != null){
+            message.info(
             JSON.stringify(res[7]),
           {
             keepAliveOnHover: true
@@ -32,9 +76,16 @@ const getInitParam =()=>{
           
         );
         localStorage.setItem('diningValue',JSON.stringify(res));
-       
+        pushResParam(res);
+          
+        }else{
+            message.error(
+            "获取数据失败",
+          {
+            keepAliveOnHover: true
+          });
+          }
         });
-
         renovate();
 };
 
@@ -55,26 +106,12 @@ const getPageParam =()=>{
           
         );
         localStorage.setItem('diningValue',JSON.stringify(res));
-       
+        pushResParam(res);
+
         });
       
         renovate();
 };
-
-
-
-/*
- const props= {
-    grid0:(localStorage.getItem('diningValue')==null || localStorage.getItem('diningValue')==='') ? "": JSON.stringify(JSON.parse(localStorage.getItem('diningValue'))[0]),
-    grid1:(localStorage.getItem('diningValue')==null || localStorage.getItem('diningValue')==='') ? "": JSON.stringify(JSON.parse(localStorage.getItem('diningValue'))[1]),
-    grid2:(localStorage.getItem('diningValue')==null || localStorage.getItem('diningValue')==='') ? "": JSON.stringify(JSON.parse(localStorage.getItem('diningValue'))[2]),
-    grid3:(localStorage.getItem('diningValue')==null || localStorage.getItem('diningValue')==='') ? "": JSON.stringify(JSON.parse(localStorage.getItem('diningValue'))[3]),
-    grid4:(localStorage.getItem('diningValue')==null || localStorage.getItem('diningValue')==='') ? "": JSON.stringify(JSON.parse(localStorage.getItem('diningValue'))[4]),
-    grid5:(localStorage.getItem('diningValue')==null || localStorage.getItem('diningValue')==='') ? "": JSON.stringify(JSON.parse(localStorage.getItem('diningValue'))[5]),
-    grid6:(localStorage.getItem('diningValue')==null || localStorage.getItem('diningValue')==='') ? "": JSON.stringify(JSON.parse(localStorage.getItem('diningValue'))[6]),
-    grid7:(localStorage.getItem('diningValue')==null || localStorage.getItem('diningValue')==='') ? "": JSON.stringify(JSON.parse(localStorage.getItem('diningValue'))[7]),
-}*/
-
 </script>
 
 <template>
