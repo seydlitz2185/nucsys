@@ -15,6 +15,7 @@ const router = useRouter;
 </script>
 
 <template>
+  <n-loading-bar-provider>
   <n-dialog-provider>
     <n-config-provider :theme="theme" >
       <!--
@@ -25,6 +26,7 @@ const router = useRouter;
 </n-message-provider>
 </n-config-provider>
 </n-dialog-provider>
+</n-loading-bar-provider>
 </template>
 
 <style scoped>

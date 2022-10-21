@@ -3,8 +3,8 @@ import axios from 'axios';
 import {defineEmits,computed,ref, toRefs, toRef ,inject,onBeforeMount} from "vue";
 import{useMessage,useDialog,useLoadingBar }from 'naive-ui';
 import {storeToRefs} from 'pinia';
-import {useDiningStore} from "../../stores/diningpinia";
-import {useDummyFlagStore} from "../../stores/dummyflag";
+import {useDiningStore} from "../../../stores/diningpinia";
+import {useDummyFlagStore} from "../../../stores/dummyflag";
 const renovate = inject("reload");
 const dialog = useDialog();
 const message=useMessage();
@@ -31,6 +31,7 @@ function pushResParam (res){
   var i = 0;
   for (i = 0; i < 8; i++) { 
           let resElem = res[i];
+       
           if(resElem == null){
             store.grids[i].diningContact = "dummy";
           store.grids[i].diningId = parseInt(-1);
@@ -65,21 +66,18 @@ const detail=()=>{
         })
 };
 
-const order=()=>{
+const finish=()=>{
   loadingBar.start();
-  const userinfo = JSON.parse(localStorage.login);
   let order={
     diningId: store.grids[pageId].diningId,
-    hostUserId: store.grids[pageId].diningUserId,
-    deliverUserId:userinfo.id,
   };
   let params = new URLSearchParams();
         params.append("json",JSON.stringify(order));
   axios.post(
-         "http://localhost:8082/DiningOrderServlet",params)
+         "http://localhost:8082/DiningOrderFinishServlet",params)
          .then(function(resp){
           let res =  resp.data;
-          if(res.msg == "接单成功"){
+          if(res.msg == "订单已完成"){
           message.success(
             res.msg,
           {
@@ -87,23 +85,7 @@ const order=()=>{
           }
           
         );
-        let fetch={offset: page.value};
-      let params = new URLSearchParams();
-      params.append("json",JSON.stringify(fetch));
-      axios.post(
-         "http://localhost:8082/DiningFetchPageServlet",params)
-         .then(function(resp){
-          let res =  resp.data;
-          message.info(
-            JSON.stringify(res[7]),
-          {
-            keepAliveOnHover: true
-          }
           
-        );
-        //localStorage.setItem('diningValue',JSON.stringify(res));
-        pushResParam(res);
-        });
         loadingBar.finish();
       }else{ message.error(
             res.msg,
@@ -112,9 +94,8 @@ const order=()=>{
           });
           loadingBar.error()
         }
-        
+        renovate();
       })};
-      
 function timestampToTime(timestamp) {
     timestamp = timestamp ? parseInt(timestamp) : null;
     let date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
@@ -122,9 +103,9 @@ function timestampToTime(timestamp) {
     let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
     let D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' ';
     let h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-    let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
-
-    return Y + M + D + h + m ;
+    let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+    let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+    return Y + M + D + h + m + s;
   };
 
 
@@ -160,8 +141,8 @@ function timestampToTime(timestamp) {
       <n-button  type="primary" quaternary  @click="detail">
       详情
     </n-button>
-    <n-button  type="primary" quaternary  @click="order">
-      接单
+    <n-button  type="primary" quaternary  @click="finish">
+      完成
     </n-button>
         </n-form-item-gi>
       </n-grid>

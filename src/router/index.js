@@ -10,6 +10,9 @@ import dining from '../components/workplace/dining.vue';
 import mystate from '../components/workplace/mystate.vue';
 import mydining from  '../components/workplace/mydining/mydining.vue';
 import mydiningorder from  '../components/workplace/mydining/mydiningorder.vue';
+import mydiningproxypick from  '../components/workplace/mydining/mydiningproxypick.vue';
+import myOrders from  '../components/workplace/myOrders.vue';
+import myProxyPick from  '../components/workplace/myProxyPick.vue';
 import market from '../components/workplace/market.vue';
 import settings from '../components/workplace/settings.vue';
 import proxypick from '../components/workplace/proxypick.vue';
@@ -46,10 +49,15 @@ const routes=[
       {path:'/HomePage/diningpost',name:"diningpost",component:diningpost, props: true,},
       {path:'/HomePage/expresspost',name:"expresspost",component:expresspost, props: true,},
       {path:'/HomePage/marketpost',name:"marketpost",component:marketpost, props: true,},
-      {path:'/HomePage/mystate',name:"mystate",component:mystate,props: true,
+      {path:'/HomePage/mystate',name:"mystate",component:mystate,props: true,},
+      {path:'/HomePage/myproxypicks',name:"myproxypicks",component:myProxyPick ,props: true, redirect:'/HomePage/myproxypicks/mydiningproxypicks',
       children:[
-        {path:'/HomePage/mystate/mydining',name:"mydining",component:mydining,props: true},
-        {path:'/HomePage/mystate/mydiningorder',name:"mydiningorder",component:mydiningorder,props: true},
+        {path:'/HomePage/myproxypicks/mydiningproxypicks',name:"mydiningprxypicks",component:mydiningproxypick,props: true},
+      ]},
+      {path:'/HomePage/myorders',name:"myorders",component:myOrders,props: true, redirect:'/HomePage/myorders/mydining',
+      children:[
+        {path:'/HomePage/myorders/mydining',name:"mydining",component:mydining,props: true},
+        {path:'/HomePage/myorders/mydiningorder',name:"mydiningorder",component:mydiningorder,props: true},
       ]},
       {path:'/HomePage/settings',name:"settings",component:settings,props: true},
       {path:'/HomePage/admin',name:"admin",component:admin,props: true},

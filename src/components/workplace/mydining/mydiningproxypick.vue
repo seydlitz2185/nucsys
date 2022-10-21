@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 import{useMessage}from 'naive-ui';
-import myDiningOrderGrid from "./myDiningOrderGrid.vue"
+import myDiningProxyPickGrid from "./myDiningProxyPickGrid.vue"
 import { inject,ref,toRef ,onMounted} from "vue";
 import {useDiningStore} from "../../../stores/diningpinia";
 import {useDummyFlagStore} from "../../../stores/dummyflag";
@@ -10,12 +10,14 @@ const store = useDiningStore();
 const renovate = inject("reload");
 const message = useMessage();
 const page= ref((localStorage.getItem('diningPage')==null || localStorage.getItem('diningPage')==='') ? 1:parseInt(localStorage.getItem('diningPage')));
+
 onMounted(() => {
+  
   let fetch={userId: JSON.parse(localStorage.getItem("login")).id,offset: page.value};
       let params = new URLSearchParams();
       params.append("json",JSON.stringify(fetch));
       axios.post(
-         "http://localhost:8082/DiningFetchUserOrderServlet",params)
+         "http://localhost:8082/DiningOrderFetchUserServlet",params)
          .then(function(resp){
           let res =  resp.data;
           message.info(
@@ -27,6 +29,7 @@ onMounted(() => {
             keepAliveOnHover: true
           }
         );
+        localStorage.setItem('diningValue',JSON.stringify(res));
         pushResParam(res);
         
         });
@@ -75,28 +78,28 @@ const getPageParam =()=>{
       <n-message-provider>
      <n-grid cols="4 300:4 300:4" :x-gap="24" :y-gap="24" item-responsive="true" >
       <n-gi>
-        <myDiningOrderGrid :msg=0  />
+        <myDiningProxyPickGrid :msg=0  />
       </n-gi>
       <n-gi>
-        <myDiningOrderGrid :msg=1 />
+        <myDiningProxyPickGrid :msg=1 />
       </n-gi>
       <n-gi>
-        <myDiningOrderGrid :msg=2 />
+        <myDiningProxyPickGrid :msg=2 />
       </n-gi>
       <n-gi>
-        <myDiningOrderGrid :msg=3 />
+        <myDiningProxyPickGrid :msg=3 />
       </n-gi>
       <n-gi>
-        <myDiningOrderGrid :msg=4 />
+        <myDiningProxyPickGrid :msg=4 />
       </n-gi>
       <n-gi>
-        <myDiningOrderGrid :msg=5 />
+        <myDiningProxyPickGrid :msg=5 />
       </n-gi>
       <n-gi>
-        <myDiningOrderGrid :msg=6 />
+        <myDiningProxyPickGrid :msg=6 />
       </n-gi>
       <n-gi>
-        <myDiningOrderGrid :msg=7 />
+        <myDiningProxyPickGrid :msg=7 />
       </n-gi>
     </n-grid>
     <n-divider />

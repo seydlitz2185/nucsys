@@ -11,9 +11,6 @@ const renovate = inject("reload");
 const message = useMessage();
 const page= ref((localStorage.getItem('diningPage')==null || localStorage.getItem('diningPage')==='') ? 1:parseInt(localStorage.getItem('diningPage')));
 
-function handleClose () {
-        message.warning('你尝试关闭，但并没有这个功能')
-      }
 
 const getOneParam =()=>{
   const data =[{"diningContact":"18842892905","diningId":1,"diningInfo":"多加米饭","diningName":"南苑一食堂","diningPrice":"15.00","diningTags":"[\"黄焖鸡米饭\",\"微辣\"]","diningTime":"1665924437000","diningUser":"Steven","diningUserId":"14119401"},{"diningContact":"18842892905","diningId":19,"diningInfo":"多加米饭","diningName":"南苑一食堂","diningPrice":"15","diningTags":"[\"黄焖鸡米饭\",\"微辣\",\"打包\"]","diningTime":"1672542000000","diningUser":"Steven","diningUserId":"14119401"},{"diningContact":"18842892905","diningId":20,"diningInfo":"多加米饭","diningName":"南苑一食堂","diningPrice":"15","diningTags":"[\"黄焖鸡米饭\",\"微辣\",\"打包\"]","diningTime":"1672542000000","diningUser":"Steven","diningUserId":"14119401"},{"diningContact":"18842892905","diningId":21,"diningInfo":"多加米饭","diningName":"南苑一食堂","diningPrice":"15","diningTags":"[\"黄焖鸡米饭\",\"微辣\",\"打包\"]","diningTime":"1672542000000","diningUser":"Steven","diningUserId":"14119401"},{"diningContact":"18842892905","diningId":22,"diningInfo":"多加米饭","diningName":"南苑一食堂","diningPrice":"15","diningTags":"[\"黄焖鸡米饭\",\"微辣\",\"打包\"]","diningTime":"1672542000000","diningUser":"Steven","diningUserId":"14119401"},{"diningContact":"18842892905","diningId":23,"diningInfo":"多加米饭","diningName":"南苑一食堂","diningPrice":"15","diningTags":"[\"黄焖鸡米饭\",\"微辣\",\"打包\"]","diningTime":"1672542000000","diningUser":"Steven","diningUserId":"14119401"},{"diningContact":"18842892905","diningId":24,"diningInfo":"多加米饭","diningName":"南苑一食堂","diningPrice":"15","diningTags":"[\"黄焖鸡米饭\",\"微辣\",\"打包\"]","diningTime":"1672542000000","diningUser":"Steven","diningUserId":"14119401"},{"diningContact":"18842892905","diningId":25,"diningInfo":"多加米饭","diningName":"南苑一食堂","diningPrice":"15","diningTags":"[\"黄焖鸡米饭\",\"微辣\",\"打包\"]","diningTime":"1672542000000","diningUser":"Steven","diningUserId":"14119401"}]
@@ -37,7 +34,7 @@ onMounted(() => {
             keepAliveOnHover: true
           }
         );
-        localStorage.setItem('diningValue',JSON.stringify(res));
+        //localStorage.setItem('diningValue',JSON.stringify(res));
         pushResParam(res);
         
         });
@@ -92,7 +89,7 @@ const getInitParam =()=>{
           }
           
         );
-        localStorage.setItem('diningValue',JSON.stringify(res));
+        //localStorage.setItem('diningValue',JSON.stringify(res));
         pushResParam(res);
           
         }else{
@@ -108,24 +105,7 @@ const getInitParam =()=>{
 
 const getPageParam =()=>{
   localStorage.setItem('diningPage',page.value);
-  let data={offset: page.value};
-  let params = new URLSearchParams();
-        params.append("json",JSON.stringify(data));
-  axios.post(
-         "http://localhost:8082/DiningFetchPageServlet",params)
-         .then(function(resp){
-          let res =  resp.data;
-          message.info(
-            JSON.stringify(res[7]),
-          {
-            keepAliveOnHover: true
-          }
-          
-        );
-        localStorage.setItem('diningValue',JSON.stringify(res));
-        pushResParam(res);
 
-        });
       
         renovate();
 };
@@ -134,18 +114,14 @@ const getPageParam =()=>{
 <template>
    
   <n-message-provider>
-    <n-grid :cols="2" >
-        <n-form-item-gi>
-          <n-button  secondary type="primary">
+    <n-button-group>
+          <n-button  secondary  type="primary">
         <router-link to="/HomePage/diningpost">下单</router-link>
-    </n-button>
-      </n-form-item-gi>
-        <n-form-item-gi >
+          </n-button>
         <n-button  secondary type="primary" @click="getInitParam"  >
          刷新
         </n-button>   
-        </n-form-item-gi>
-      </n-grid>
+    </n-button-group>
 
 
     <n-divider />
