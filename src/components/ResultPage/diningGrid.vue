@@ -59,7 +59,7 @@ const detail=()=>{
   dialog.info({
           title: '详细信息',
           content: JSON.stringify({"订单号":store.grids[pageId].diningId,"用户名":store.grids[pageId].diningUser,
-      "联系方式":store.grids[pageId].diningContact,"备注":store.grids[pageId].diningInfo}),
+      "联系方式":store.grids[pageId].diningContact,"地址":store.grids[pageId].diningInfo}),
           positiveText: '好',
 
         })
@@ -94,13 +94,14 @@ const order=()=>{
          "http://localhost:8082/DiningFetchPageServlet",params)
          .then(function(resp){
           let res =  resp.data;
+          /*
           message.info(
             JSON.stringify(res[7]),
           {
             keepAliveOnHover: true
           }
           
-        );
+        );*/
         //localStorage.setItem('diningValue',JSON.stringify(res));
         pushResParam(res);
         });

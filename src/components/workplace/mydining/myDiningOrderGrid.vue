@@ -22,7 +22,7 @@ const props =defineProps({
 const data = toRef(props, 'msg'); 
 const pageId = parseInt(data.value);
 
-const page= ref((localStorage.getItem('diningPage')==null || localStorage.getItem('diningPage')==='') ? 1:parseInt(localStorage.getItem('diningPage')));
+const page= ref((localStorage.getItem('myDiningOrderPage')==null || localStorage.getItem('myDiningOrderPage')==='') ? 1:parseInt(localStorage.getItem('myDiningOrderPage')));
 function handleClose () {
         message.warning('你尝试关闭，但并没有这个功能');
       };
@@ -60,7 +60,7 @@ const detail=()=>{
   dialog.info({
           title: '详细信息',
           content: JSON.stringify({"订单号":store.grids[pageId].diningId,"用户名":store.grids[pageId].diningUser,
-      "联系方式":store.grids[pageId].diningContact,"备注":store.grids[pageId].diningInfo}),
+      "联系方式":store.grids[pageId].diningContact,"地址":store.grids[pageId].diningInfo}),
           positiveText: '好',
 
         })

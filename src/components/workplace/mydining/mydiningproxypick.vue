@@ -9,7 +9,7 @@ const dummyFlag = useDummyFlagStore();
 const store = useDiningStore();
 const renovate = inject("reload");
 const message = useMessage();
-const page= ref((localStorage.getItem('diningPage')==null || localStorage.getItem('diningPage')==='') ? 1:parseInt(localStorage.getItem('diningPage')));
+const page= ref((localStorage.getItem('myDiningProxyPickPage')==null || localStorage.getItem('myDiningProxyPickPage')==='') ? 1:parseInt(localStorage.getItem('myDiningProxyPickPage')));
 
 onMounted(() => {
   
@@ -20,6 +20,7 @@ onMounted(() => {
          "http://localhost:8082/DiningOrderFetchUserServlet",params)
          .then(function(resp){
           let res =  resp.data;
+          /*
           message.info(
             JSON.stringify(res[0]),
             {
@@ -28,7 +29,7 @@ onMounted(() => {
           {
             keepAliveOnHover: true
           }
-        );
+        );*/
         localStorage.setItem('diningValue',JSON.stringify(res));
         pushResParam(res);
         
@@ -69,14 +70,14 @@ onMounted(() => {
 
 
 const getPageParam =()=>{
-  localStorage.setItem('diningPage',page.value);
+  localStorage.setItem('myDiningProxyPickPage',page.value);
         renovate();
 };
 </script>
 
 <template>
       <n-message-provider>
-     <n-grid cols="4 300:4 300:4" :x-gap="24" :y-gap="24" item-responsive="true" >
+     <n-grid class="grids"  cols="4 300:4 300:4" :x-gap="24" :y-gap="24" item-responsive="true" >
       <n-gi>
         <myDiningProxyPickGrid :msg=0  />
       </n-gi>
@@ -114,3 +115,9 @@ const getPageParam =()=>{
   </n-space>
   </n-message-provider>
 </template>
+
+<style>
+.grids{
+  height: 600px;
+}
+</style>

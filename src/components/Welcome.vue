@@ -7,32 +7,55 @@ import HelloWorld from './HelloWorld.vue';
   <n-message-provider>
     <n-notification-provider>
       <n-dialog-provider>
-        <HelloWorld msg="校内跑腿/二手系统" />
+        <HelloWorld msg="校内代取系统" />
         <n-card
-    title="📖 如何成功"
+    title="这是一个代取系统"
     embedded
     :bordered="false"
   >
-    如果你年轻的时候不 996，你什么时候可以 996？你一辈子没有
-    996，你觉得你就很骄傲了？这个世界上，我们每一个人都希望成功，都希望美好生活，都希望被尊重，我请问大家，你不付出超越别人的努力和时间，你怎么能够实现你想要的成功？
+  可以用于南京农业大学校内师生代取快递、代买食堂饭菜和超市商品
   </n-card>
   <n-card>
   <n-carousel autoplay trigger="hover"  >
     <img
       class="carousel-img"
-      src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel1.jpeg"
+      src="../assets/images/njau.jpeg"
     >
     <img
       class="carousel-img"
-      src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel2.jpeg"
+      src="../assets/images/dining1.jpeg"
     >
     <img
       class="carousel-img"
-      src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg"
+      src="../assets/images/dining2.jpeg"
     >
     <img
       class="carousel-img"
-      src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel4.jpeg"
+      src="../assets/images/dining3.jpeg"
+    >
+    <img
+      class="carousel-img"
+      src="../assets/images/diningn.jpeg"
+    >
+    <img
+      class="carousel-img"
+      src="../assets/images/dining5.jpeg"
+    >
+    <img
+      class="carousel-img"
+      src="../assets/images/diningj.jpeg"
+    >
+    <img
+      class="carousel-img"
+      src="../assets/images/express1.jpeg"
+    >
+    <img
+      class="carousel-img"
+      src="../assets/images/express2.jpeg"
+    >
+    <img
+      class="carousel-img"
+      src="../assets/images/market.jpeg"
     >
   </n-carousel>
 </n-card>
@@ -57,7 +80,7 @@ import HelloWorld from './HelloWorld.vue';
 <style scoped>
 .carousel-img {
       width: 100%;
-      max-height: 280px;
+      max-height: 480px;
       object-fit: cover;
     }
 

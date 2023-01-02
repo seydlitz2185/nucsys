@@ -18,9 +18,6 @@ const router = useRouter;
   <n-loading-bar-provider>
   <n-dialog-provider>
     <n-config-provider :theme="theme" >
-      <!--
-    <n-card > 系统开发中，此页面仅为测试使用。
-        这实际上是一个健康信息登记系统 </n-card>-->
     <n-message-provider>
     <HelloThere class="obiwan"/>
 </n-message-provider>

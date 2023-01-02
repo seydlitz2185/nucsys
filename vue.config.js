@@ -1,5 +1,5 @@
 module.exports = {
-    publicPath:'/my-app/',
+    publicPath:'./',
     outputDir: "dist",
     assetsDir:"static",
     indexPath:'index.html',

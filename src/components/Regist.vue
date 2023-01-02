@@ -18,19 +18,19 @@
     const formRef = ref(null);
     const LoginValue = ref({
          UserLogin: {
-          account:"14119401",
-          passwd: "123456",
+          account:"",
+          passwd: "",
           },
          
         },
         );
     const RegistValue=ref({
       UserRegist:{
-            id:"14119402",
-            userName:"王佳伟",
-            userPhoneNum:"18168051462",
-            userPassword:"123",
-            duplicatePassword:"123",
+            id:"",
+            userName:"",
+            userPhoneNum:"",
+            userPassword:"",
+            duplicatePassword:"",
           },
     },)
     function validatePasswordStartWith(rule, value) {
@@ -156,8 +156,8 @@
           let res =  resp.data;
         if(res.msg==="登陆成功"){
 	      message.success(
-          JSON.stringify(res),
-          //res.msg,
+          //JSON.stringify(res),
+          res.msg,
           {
             keepAliveOnHover: true
           }
@@ -235,11 +235,11 @@
     
     <template>
   <n-message-provider>
-
+      <!--
       <n-button type="primary" @click="loginHomePageTest"  block secondary strong>
           登录
         </n-button>
-     
+      -->
   <n-card class="obiwan" hoverable embedded
     :bordered="false">
     <n-tabs

@@ -25,15 +25,13 @@ onMounted(() => {
          "http://localhost:8082/DiningFetchPageServlet",params)
          .then(function(resp){
           let res =  resp.data;
+          /*
           message.info(
             JSON.stringify(res[0]),
             {
               keepAliveOnHover: true
             },
-          {
-            keepAliveOnHover: true
-          }
-        );
+        );*/
         //localStorage.setItem('diningValue',JSON.stringify(res));
         pushResParam(res);
         
@@ -82,13 +80,14 @@ const getInitParam =()=>{
          .then(function(resp){
           let res =  resp.data;
           if(res != null){
+            /*
             message.info(
             JSON.stringify(res[7]),
           {
             keepAliveOnHover: true
           }
           
-        );
+        );*/
         //localStorage.setItem('diningValue',JSON.stringify(res));
         pushResParam(res);
           
@@ -126,7 +125,7 @@ const getPageParam =()=>{
 
     <n-divider />
     <routerView v-if="isRouterAlive" ></routerView>
-    <n-grid  cols="4 400:4 400:4"  :x-gap="24" :y-gap="24" item-responsive="true" v-cloak >
+    <n-grid  class="grids" cols="4 400:4 400:4"  :x-gap="24" :y-gap="24" item-responsive="true" v-cloak >
       <n-gi>
         <diningGrid :msg=0  />
       </n-gi>
@@ -177,5 +176,8 @@ const getPageParam =()=>{
    
 [v-cloak] {
     display: none;
+}
+.grids{
+  height: 600px;
 }
   </style>

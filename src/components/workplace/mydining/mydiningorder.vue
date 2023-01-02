@@ -9,7 +9,7 @@ const dummyFlag = useDummyFlagStore();
 const store = useDiningStore();
 const renovate = inject("reload");
 const message = useMessage();
-const page= ref((localStorage.getItem('diningPage')==null || localStorage.getItem('diningPage')==='') ? 1:parseInt(localStorage.getItem('diningPage')));
+const page= ref((localStorage.getItem('myDiningOrderPage')==null || localStorage.getItem('myDiningOrderPage')==='') ? 1:parseInt(localStorage.getItem('myDiningOrderPage')));
 onMounted(() => {
   let fetch={userId: JSON.parse(localStorage.getItem("login")).id,offset: page.value};
       let params = new URLSearchParams();
@@ -18,6 +18,7 @@ onMounted(() => {
          "http://localhost:8082/DiningFetchUserOrderServlet",params)
          .then(function(resp){
           let res =  resp.data;
+          /*
           message.info(
             JSON.stringify(res[0]),
             {
@@ -26,7 +27,7 @@ onMounted(() => {
           {
             keepAliveOnHover: true
           }
-        );
+        );*/
         pushResParam(res);
         
         });
@@ -66,14 +67,14 @@ onMounted(() => {
 
 
 const getPageParam =()=>{
-  localStorage.setItem('diningPage',page.value);
+  localStorage.setItem('myDiningOrderPage',page.value);
         renovate();
 };
 </script>
 
 <template>
       <n-message-provider>
-     <n-grid cols="4 300:4 300:4" :x-gap="24" :y-gap="24" item-responsive="true" >
+     <n-grid  class="grids" cols="4 300:4 300:4" :x-gap="24" :y-gap="24" item-responsive="true" >
       <n-gi>
         <myDiningOrderGrid :msg=0  />
       </n-gi>
@@ -111,3 +112,9 @@ const getPageParam =()=>{
   </n-space>
   </n-message-provider>
 </template>
+
+<style>
+.grids{
+  height: 600px;
+}
+</style>

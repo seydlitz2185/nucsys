@@ -14,9 +14,15 @@ import mydiningproxypick from  '../components/workplace/mydining/mydiningproxypi
 import myOrders from  '../components/workplace/myOrders.vue';
 import myProxyPick from  '../components/workplace/myProxyPick.vue';
 import market from '../components/workplace/market.vue';
+import mymarket from  '../components/workplace/mymarket/mymarket.vue';
+import mymarketorder from  '../components/workplace/mymarket/mymarketorder.vue';
+import mymarketproxypick from  '../components/workplace/mymarket/mymarketproxypick.vue';
 import settings from '../components/workplace/settings.vue';
 import proxypick from '../components/workplace/proxypick.vue';
 import express from '../components/workplace/express.vue';
+import myexpress from  '../components/workplace/myexpress/myexpress.vue';
+import myexpressorder from  '../components/workplace/myexpress/myexpressorder.vue';
+import myexpressproxypick from  '../components/workplace/myexpress/myexpressproxypick.vue';
 import takeaway from '../components/workplace/takeaway.vue';
 import diningpost from '../components/workplace/geng/diningpost.vue';
 import expresspost from '../components/workplace/geng/expresspost.vue';
@@ -53,11 +59,17 @@ const routes=[
       {path:'/HomePage/myproxypicks',name:"myproxypicks",component:myProxyPick ,props: true, redirect:'/HomePage/myproxypicks/mydiningproxypicks',
       children:[
         {path:'/HomePage/myproxypicks/mydiningproxypicks',name:"mydiningprxypicks",component:mydiningproxypick,props: true},
+        {path:'/HomePage/myproxypicks/mymarketproxypicks',name:"mymarketprxypicks",component:mymarketproxypick,props: true},
+        {path:'/HomePage/myproxypicks/myexpressproxypicks',name:"myexpressprxypicks",component:myexpressproxypick,props: true},
       ]},
       {path:'/HomePage/myorders',name:"myorders",component:myOrders,props: true, redirect:'/HomePage/myorders/mydining',
       children:[
         {path:'/HomePage/myorders/mydining',name:"mydining",component:mydining,props: true},
         {path:'/HomePage/myorders/mydiningorder',name:"mydiningorder",component:mydiningorder,props: true},
+        {path:'/HomePage/myorders/mymarket',name:"mymarket",component:mymarket,props: true},
+        {path:'/HomePage/myorders/mymarketorder',name:"mymarketorder",component:mymarketorder,props: true},
+        {path:'/HomePage/myorders/myexpress',name:"myexpress",component:myexpress,props: true},
+        {path:'/HomePage/myorders/myexpressorder',name:"myexpressorder",component:myexpressorder,props: true},
       ]},
       {path:'/HomePage/settings',name:"settings",component:settings,props: true},
       {path:'/HomePage/admin',name:"admin",component:admin,props: true},

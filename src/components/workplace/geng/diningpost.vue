@@ -68,7 +68,7 @@ import { useRouter, useRoute ,onBeforeRouteUpdate} from 'vue-router';
           cost:(cookie==null || cookie ==='') ?10: JSON.parse(cookie).cost,
           contact:(cookie==null || cookie ==='') ?"": JSON.parse(cookie).contact,
           tags:(cookie==null || cookie ==='') ?[]: JSON.parse(cookie).tags,
-          info:(cookie==null || cookie ==='') ?'不要辣椒': JSON.parse(cookie).info,
+          info:(cookie==null || cookie ==='') ?'': JSON.parse(cookie).info,
           },
          },
     );
@@ -193,11 +193,11 @@ import { useRouter, useRoute ,onBeforeRouteUpdate} from 'vue-router';
           <n-form-item-row label="标签" path = "Dining.tags">
             <n-dynamic-tags v-model:value="DiningValue.Dining.tags" name='info'/>
           </n-form-item-row>
-          <n-form-item-row label="备注:" path = "Dining.info">
+          <n-form-item-row label="地址:" path = "Dining.info">
               <n-input
               v-model:value="DiningValue.Dining.info"
               type="textarea"
-              placeholder="备注"
+              placeholder="地址"
               />
           </n-form-item-row>
         </n-form>
