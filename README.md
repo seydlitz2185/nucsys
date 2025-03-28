@@ -1,10 +1,12 @@
 管理信息系统课程大作业
 南京农业大学 信息管理与信息系统专业
-仓库明“nucsys”没有任何实际意义，随便起的
+该系统实现了一个简单的校内网络公告栏，可供校内同学发布和认领校内食堂、快递代取订单信息。
+编写时采用了前后端分离的思路，尽可能贴近真实工程。但由于开发时间与个人能力有限，目前的系统仅仅是一个课程作业水平。
+仓库名称“nucsys”没有任何实际意义，是随便起的；
 最初完成于2022年末
 2025年2月15日更新：
 
 本仓库有三个分支：
 - master （当前所在分支）仅存放markdown文档，用于介绍本项目内容；
-- frontend nucsys的前端，Vue3 + naive ui
-- backend_tomcat nucsys的后端，Tomcat服务器，主要功能使用Java bean 和 servlet 实现，很简陋，不具备参考价值；待重构
+- frontend nucsys的前端，Vue3 + naive ui；axios封装请求，inia状态管理
+- backend_tomcat nucsys的后端，Tomcat服务器，主要功能使用servlet实现（对前端序列化和反序列化），使用mybatis访问mysql数据库CURD。很简陋，不具备太大的参考价值，应使用spring boot重构。
